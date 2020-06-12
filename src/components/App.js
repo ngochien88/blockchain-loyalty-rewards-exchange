@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+﻿import React, { Component } from "react";
 import coupon from "../coupon.png";
 import "./App.css";
 import Web3 from "web3";
@@ -41,6 +41,18 @@ class App extends Component {
       DaiTokenMock.abi,
       daiTokenAddress
     );
+class App extends Component {
+  async componentWillMount() {
+    await this.loadWeb3();
+    await this.loadBlockchainData();
+    var qrcode = new window.QRCode("id_qrcode", {
+      text: this.state.account,
+      width: 300,
+      height: 300,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: window.QRCode.CorrectLevel.H,
+    });
     this.setState({ daiTokenMock: daiTokenMock });
     const balance = await daiTokenMock.methods
       .balanceOf(this.state.account)

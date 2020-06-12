@@ -7,9 +7,6 @@ contract Migrations {
   constructor() public {
     owner = msg.sender;
   }
- function setCompletedaxa(uint completed) public restricted {
-    last_completed_migration = completed;
-  }
 
   modifier restricted() {
     if (msg.sender == owner) _;
@@ -17,6 +14,9 @@ contract Migrations {
 
   function setCompleted(uint completed) public restricted {
     last_completed_migration = completed;
+  }
+  modifier restricted() {
+    if (msg.sender == owner) _;
   }
 
   function upgrade(address new_address) public restricted {
