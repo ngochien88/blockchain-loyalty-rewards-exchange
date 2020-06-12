@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+﻿import React, { Component } from "react";
 import coupon from "../coupon.png";
 import "./App.css";
 import Web3 from "web3";
@@ -45,6 +45,10 @@ class App extends Component {
     const balance = await daiTokenMock.methods
       .balanceOf(this.state.account)
       .call();
+nsole.log("App -> loadBlockchainData -> accounts", accounts);
+    this.setState({ account: accounts[0] });
+    const daiTokenAddress = "0x976Dd5f8A1c52bb9431736A4Fe2dd32235ab8786"; // Replace DAI Address Here
+    const daiTokenMock = new web3
     console.log("App -> loadBlockchainData -> balance", balance);
     // eslint-disable-next-line no-unused-expressions
     balance
@@ -74,6 +78,8 @@ class App extends Component {
       daiTokenMock: null,
       balance: 0,
       transactions: [],
+ account: "",
+      daiTokenMock: null,
     };
 
     this.transfer = this.transfer.bind(this);
@@ -86,6 +92,9 @@ class App extends Component {
       qrbox: 250,
     });
     window.html5QrcodeScanner = html5QrcodeScanner;
+    html5QrcodeScanner.render((mess) => {
+      this.onScanSuccess(mess, html5QrcodeScanner);
+	 window.html5QrcodeScanner = html5QrcodeScanner;
     html5QrcodeScanner.render((mess) => {
       this.onScanSuccess(mess, html5QrcodeScanner);
     });
@@ -103,6 +112,14 @@ class App extends Component {
       .catch((err) => {
         console.log("err");
       });
+ scanner.html5Qrcode
+      .stop()
+      .then((ignore) => {
+        console.log("stopped");
+      })
+      .catch((err) => {
+        console.log("err");
+      });
   }
 
   openQR() {
@@ -111,6 +128,14 @@ class App extends Component {
   }
 
   closeQR() {
+	 scanner.html5Qrcode
+      .stop()
+      .then((ignore) => {
+        console.log("stopped");
+      })
+      .catch((err) => {
+        console.log("err");
+      });
     document.getElementById("wrapper").style["margin-left"] = "0vw";
   }
 
@@ -164,6 +189,12 @@ class App extends Component {
                       placeholder="Địa chỉ nhận"
                       required
                     />
+ 		<button
+                  className="btn btn-info my-qr"
+                  onClick={() => {
+                    this.openQR();
+                  }}
+                >
                     <i
                       className="fa fa-camera"
                       onClick={() => {
@@ -184,6 +215,28 @@ class App extends Component {
                       required
                     />
                   </div>
+	  <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Người nhận</th>
+                      <th scope="col">Số Coupon</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.transactions.map((tx, key) => {
+                      return (
+                        <tr key={key}>
+                          <td>{tx.returnValues.to}</td>
+                          <td>
+                            {window.web3.utils.fromWei(
+                              tx.returnValues.value.toString(),
+                              "Ether"
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
                   <button type="submit" className="btn btn-primary btn-block">
                     Gởi
                   </button>
