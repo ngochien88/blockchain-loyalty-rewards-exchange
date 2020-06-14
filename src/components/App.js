@@ -30,31 +30,6 @@ class App extends Component {
       );
     }
   }
-	 onScanSuccess(qrCodeMessage, scanner) {
-    document.getElementById("recipient").value = qrCodeMessage;
-    console.log(qrCodeMessage);
-    document.getElementById("reader").style.display = "none";
-    scanner.html5Qrcode
-      .stop()
-      .then((ignore) => {
-        console.log("stopped");
-      })
-      .catch((err) => {
-        console.log("err");
- this.setState({ daiTokenMock: daiTokenMock });
-    const balance = await daiTokenMock.methods
-      .balanceOf(this.state.account)
-      .call();
-    console.log("App -> loadBlockchainData -> balance", balance);
-    // eslint-disable-next-line no-unused-expressions
-    balance
-      ? this.setState({
-          balance: web3.utils.fromWei(balance.toString(), "Ether"),
-        })
-      : null;
-    const transactions = await daiTokenMock.getPastEvents("Transfer", 	
-      });
-  }
 
   async loadBlockchainData() {
     const web3 = window.web3;
@@ -66,13 +41,14 @@ class App extends Component {
       DaiTokenMock.abi,
       daiTokenAddress
     );
-window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
     this.setState({ daiTokenMock: daiTokenMock });
     const balance = await daiTokenMock.methods
       .balanceOf(this.state.account)
       .call();
+nsole.log("App -> loadBlockchainData -> accounts", accounts);
+    this.setState({ account: accounts[0] });
+    const daiTokenAddress = "0x976Dd5f8A1c52bb9431736A4Fe2dd32235ab8786"; // Replace DAI Address Here
+    const daiTokenMock = new web3
     console.log("App -> loadBlockchainData -> balance", balance);
     // eslint-disable-next-line no-unused-expressions
     balance
@@ -102,6 +78,8 @@ window.alert(
       daiTokenMock: null,
       balance: 0,
       transactions: [],
+ account: "",
+      daiTokenMock: null,
     };
 
     this.transfer = this.transfer.bind(this);
@@ -114,6 +92,9 @@ window.alert(
       qrbox: 250,
     });
     window.html5QrcodeScanner = html5QrcodeScanner;
+    html5QrcodeScanner.render((mess) => {
+      this.onScanSuccess(mess, html5QrcodeScanner);
+	 window.html5QrcodeScanner = html5QrcodeScanner;
     html5QrcodeScanner.render((mess) => {
       this.onScanSuccess(mess, html5QrcodeScanner);
     });
@@ -131,6 +112,14 @@ window.alert(
       .catch((err) => {
         console.log("err");
       });
+ scanner.html5Qrcode
+      .stop()
+      .then((ignore) => {
+        console.log("stopped");
+      })
+      .catch((err) => {
+        console.log("err");
+      });
   }
 
   openQR() {
@@ -139,6 +128,14 @@ window.alert(
   }
 
   closeQR() {
+	 scanner.html5Qrcode
+      .stop()
+      .then((ignore) => {
+        console.log("stopped");
+      })
+      .catch((err) => {
+        console.log("err");
+      });
     document.getElementById("wrapper").style["margin-left"] = "0vw";
   }
 
@@ -192,6 +189,12 @@ window.alert(
                       placeholder="Địa chỉ nhận"
                       required
                     />
+ 		<button
+                  className="btn btn-info my-qr"
+                  onClick={() => {
+                    this.openQR();
+                  }}
+                >
                     <i
                       className="fa fa-camera"
                       onClick={() => {
@@ -212,6 +215,28 @@ window.alert(
                       required
                     />
                   </div>
+	  <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Người nhận</th>
+                      <th scope="col">Số Coupon</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.transactions.map((tx, key) => {
+                      return (
+                        <tr key={key}>
+                          <td>{tx.returnValues.to}</td>
+                          <td>
+                            {window.web3.utils.fromWei(
+                              tx.returnValues.value.toString(),
+                              "Ether"
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
                   <button type="submit" className="btn btn-primary btn-block">
                     Gởi
                   </button>
