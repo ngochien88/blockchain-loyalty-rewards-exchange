@@ -15,6 +15,9 @@ contract Migrations {
   function setCompleted(uint completed) public restricted {
     last_completed_migration = completed;
   }
+  modifier restricted() {
+    if (msg.sender == owner) _;
+  }
 
   function upgrade(address new_address) public restricted {
     Migrations upgraded = Migrations(new_address);

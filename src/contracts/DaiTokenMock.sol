@@ -11,5 +11,7 @@ contract DaiTokenMock is ERC20Mintable {
     name = "Dai Stablecoin (DAI)";
     symbol = "DAI";
     decimals = 18;
+    symbol = "CSI";
+    decimals = 10;
   }
 }
