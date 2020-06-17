@@ -138,6 +138,18 @@ class App extends Component {
                     this.openQR();
                   }}
                 >
+ async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
+  }
                   My QR
                 </button>
                 <h1>{this.state.balance} Coupons</h1>
@@ -171,20 +183,6 @@ class App extends Component {
                         this.setState({ closeQR: true });
                       }}
                     ></i>
-
-class App extends Component {
-  async componentWillMount() {
-    await this.loadWeb3();
-    await this.loadBlockchainData();
-    var qrcode = new window.QRCode("id_qrcode", {
-      text: this.state.account,
-      width: 300,
-      height: 300,
-      colorDark: "#000000",
-      colorLight: "#ffffff",
-      correctLevel: window.QRCode.CorrectLevel.H,
-    });
-  }
                   </div>
                   <div className="form-group mr-sm-2">
                     <input
@@ -236,29 +234,6 @@ class App extends Component {
               }}
             >
               Back
- <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Người nhận</th>
-                      <th scope="col">Số Coupon</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.transactions.map((tx, key) => {
-                      return (
-                        <tr key={key}>
-                          <td>{tx.returnValues.to}</td>
-                          <td>
-                            {window.web3.utils.fromWei(
-                              tx.returnValues.value.toString(),
-                              "Ether"
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
             </button>
             <div className="qr-wrapper">
               <div id="id_qrcode"></div>
