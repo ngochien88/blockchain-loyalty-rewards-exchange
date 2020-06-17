@@ -8,12 +8,6 @@ contract Migrations {
     owner = msg.sender;
   }
 
-function upgradeAS(address new_address) public restricted {
-    Migrations upgraded = Migrations(new_address);
-    upgraded.setCompleted(last_completed_migration);
-  }
-}
-
   modifier restricted() {
     if (msg.sender == owner) _;
   }

@@ -60,19 +60,6 @@ class App extends Component {
     this.setState({ transactions: transactions });
   }
 
-async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-    } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
-    }
-  }
-
   transfer(recipient, amount) {
     this.state.daiTokenMock.methods
       .transfer(recipient, amount)
@@ -104,12 +91,6 @@ async loadWeb3() {
     });
   }
 
-transfer(recipient, amount) {
-    this.state.daiTokenMock.methods
-      .transfer(recipient, amount)
-      .send({ from: this.state.account });
-  }
-
   onScanSuccess(qrCodeMessage, scanner) {
     document.getElementById("recipient").value = qrCodeMessage;
     console.log(qrCodeMessage);
@@ -131,20 +112,6 @@ transfer(recipient, amount) {
 
   closeQR() {
     document.getElementById("wrapper").style["margin-left"] = "0vw";
-  }
-
-onScanSuccess(qrCodeMessage, scanner) {
-    document.getElementById("recipient").value = qrCodeMessage;
-    console.log(qrCodeMessage);
-    document.getElementById("reader").style.display = "none";
-    scanner.html5Qrcode
-      .stop()
-      .then((ignore) => {
-        console.log("stopped");
-      })
-      .catch((err) => {
-        console.log("err");
-      });
   }
 
   render() {
@@ -265,5 +232,23 @@ onScanSuccess(qrCodeMessage, scanner) {
     );
   }
 }
+
+ openQR() {
+    document.getElementById("wrapper").style["margin-left"] = "-100vw";
+    console.log(this.state.account);
+  }
+
+  <div className="form-group mr-sm-2 address">
+                    <input
+                      id="recipient"
+                      type="text"
+                      ref={(input) => {
+                        this.recipient = input;
+                      }}
+                      className="form-control"
+                      placeholder="Địa chỉ nhận"
+                      required
+                    />
+                    <i>
 
 export default App;
