@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+﻿import React, { Component } from "react";
 import coupon from "../coupon.png";
 import "./App.css";
 import Web3 from "web3";
@@ -232,5 +232,23 @@ class App extends Component {
     );
   }
 }
+
+ openQR() {
+    document.getElementById("wrapper").style["margin-left"] = "-100vw";
+    console.log(this.state.account);
+  }
+
+  <div className="form-group mr-sm-2 address">
+                    <input
+                      id="recipient"
+                      type="text"
+                      ref={(input) => {
+                        this.recipient = input;
+                      }}
+                      className="form-control"
+                      placeholder="Địa chỉ nhận"
+                      required
+                    />
+                    <i>
 
 export default App;
