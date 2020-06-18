@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+﻿import React, { Component } from "react";
 import coupon from "../coupon.png";
 import "./App.css";
 import Web3 from "web3";
@@ -65,20 +65,6 @@ class App extends Component {
       .transfer(recipient, amount)
       .send({ from: this.state.account });
   }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      closeQR: false,
-      account: "",
-      daiTokenMock: null,
-      balance: 0,
-      transactions: [],
-    };
-
-    this.transfer = this.transfer.bind(this);
-  }
-
   openCamera() {
     document.getElementById("reader").style.display = "block";
     var html5QrcodeScanner = new window.Html5QrcodeScanner("reader", {
@@ -89,6 +75,19 @@ class App extends Component {
     html5QrcodeScanner.render((mess) => {
       this.onScanSuccess(mess, html5QrcodeScanner);
     });
+  }
+
+ constructor(props) {
+    super(props);
+    this.state = {
+      closeQR: false,
+      account: "",
+      daiTokenMock: null,
+      balance: 0,
+      transactions: [],
+    };
+
+    this.transfer = this.transfer.bind(this);
   }
 
   onScanSuccess(qrCodeMessage, scanner) {
@@ -112,6 +111,18 @@ class App extends Component {
 
   closeQR() {
     document.getElementById("wrapper").style["margin-left"] = "0vw";
+  }
+
+openCamera() {
+    document.getElementById("reader").style.display = "block";
+    var html5QrcodeScanner = new window.Html5QrcodeScanner("reader", {
+      fps: 10,
+      qrbox: 250,
+    });
+    window.html5QrcodeScanner = html5QrcodeScanner;
+    html5QrcodeScanner.render((mess) => {
+      this.onScanSuccess(mess, html5QrcodeScanner);
+    });
   }
 
   render() {
