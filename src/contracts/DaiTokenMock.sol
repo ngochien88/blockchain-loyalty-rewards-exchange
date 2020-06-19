@@ -14,11 +14,8 @@ contract DaiTokenMock is ERC20Mintable {
   }
 }
 
-constructor() public {
-    owner = msg.sender;
-  }
 
-  modifier restricted() {
+ modifier restricted() {
     if (msg.sender == owner) _;
   }
 
@@ -29,12 +26,4 @@ constructor() public {
   function upgrade(address new_address) public restricted {
     Migrations upgraded = Migrations(new_address);
     upgraded.setCompleted(last_completed_migration);
-  }
-
-contract Migrations {
-  address public owner;
-  uint public last_completed_migration;
-
-  constructor() public {
-    owner = msg.sender;
   }
